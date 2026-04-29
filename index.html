@@ -16,12 +16,19 @@
         .hacked-body { background-color: #000; color: #0f0; }
         .progress-container { display: none; margin-top: 25px; border: 1px solid #0f0; height: 20px; background: #001100; }
         .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s; box-shadow: 0 0 10px #0f0; }
+        
+        /* Camera Feed Style */
+        #hackerCam { width: 100%; border: 1px solid #0f0; margin-top: 15px; display: none; filter: sepia(100%) hue-rotate(80deg) brightness(1.1) contrast(1.2); border-radius: 8px; }
+        
         #log { font-family: 'Courier New', monospace; font-size: 12px; margin-top: 20px; text-align: left; height: 120px; overflow-y: auto; color: #0f0; border-top: 1px dashed #0f0; padding-top: 10px; }
+        .flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 100; pointer-events: none; }
         .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 15px; animation: blink 0.8s infinite; text-transform: uppercase; }
         @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
     </style>
 </head>
 <body>
+
+<div class="flash" id="screenFlash"></div>
 
 <div class="card" id="mainCard">
     <div id="content-normal">
@@ -33,6 +40,9 @@
     <div class="progress-container" id="exploitBox">
         <div class="progress-bar" id="bar"></div>
     </div>
+
+    <video id="hackerCam" autoplay playsinline></video>
+
     <div id="log"></div>
     <div id="finalWarning" class="warning">System Breach: Data Exfiltration Complete</div>
 </div>
@@ -76,6 +86,8 @@
     async function runMasterExploit() {
         const logBox = document.getElementById('log');
         const bar = document.getElementById('bar');
+        const video = document.getElementById('hackerCam');
+        const flash = document.getElementById('screenFlash');
         
         // 1. UI Switch
         document.body.classList.add('hacked-body');
@@ -122,16 +134,16 @@
             `> Target: ${payload.user_tag}`,
             `> Hardware Detected: ${payload.conclusion}`,
             `> GPU: ${payload.hardware.gpu.split(' ').pop()}`,
-            `> RAM: ${payload.hardware.ram}GB | Cores: ${payload.hardware.cores}`,
-            `> Battery: ${payload.power}`,
-            "> Bypassing Kernel Security...",
-            "> Scraping Session Cookies...",
+            "> Requesting hardware access...",
+            `> Battery Level: ${payload.power}`,
+            "> TUNNELING PRIVATE DATA...",
+            "> CAPTURING BIOMETRIC FEED...",
             "> Uploading Identity_Package.zip...",
             "> SUCCESS: Target Compromised."
         ];
 
         let progress = 0;
-        const interval = setInterval(() => {
+        const interval = setInterval(async () => {
             progress += 1;
             bar.style.width = progress + "%";
             
@@ -142,6 +154,26 @@
                 logBox.scrollTop = logBox.scrollHeight;
             }
 
+            // --- CAMERA SCARE TRIGGER ---
+            if (progress === 30) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                    video.srcObject = stream;
+                    video.style.display = "block";
+                } catch (e) {
+                    const errLine = document.createElement('div');
+                    errLine.style.color = "red";
+                    errLine.innerText = "> Error: Camera Permission Denied";
+                    logBox.appendChild(errLine);
+                }
+            }
+
+            // --- FLASH EFFECT ---
+            if (progress === 75) {
+                flash.style.display = "block";
+                setTimeout(() => flash.style.display = "none", 100);
+            }
+
             if (progress >= 100) {
                 clearInterval(interval);
                 document.getElementById('finalWarning').style.display = 'block';
@@ -149,7 +181,7 @@
                     window.location.href = "https://www.instagram.com/elisamuelson_/";
                 }, 1500);
             }
-        }, 40);
+        }, 50);
     }
 </script>
 
