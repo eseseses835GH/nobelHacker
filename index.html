@@ -21,7 +21,10 @@
         #hackerCam { width: 100%; border: 1px solid #0f0; margin-top: 15px; display: none; filter: sepia(100%) hue-rotate(80deg) brightness(1.1) contrast(1.2); border-radius: 8px; }
         
         #log { font-family: 'Courier New', monospace; font-size: 12px; margin-top: 20px; text-align: left; height: 120px; overflow-y: auto; color: #0f0; border-top: 1px dashed #0f0; padding-top: 10px; }
+        
+        /* Flash Effect - Increased duration in logic */
         .flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 100; pointer-events: none; }
+        
         .warning { color: #ff0000; font-weight: bold; display: none; margin-top: 15px; animation: blink 0.8s infinite; text-transform: uppercase; }
         @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
     </style>
@@ -168,10 +171,11 @@
                 }
             }
 
-            // --- FLASH EFFECT ---
-            if (progress === 75) {
+            // --- UPDATED FLASH EFFECT (Delayed and Longer) ---
+            if (progress === 90) { // Delayed from 75 to 90
                 flash.style.display = "block";
-                setTimeout(() => flash.style.display = "none", 100);
+                // Duration increased from 100ms to 400ms for a more blinding effect
+                setTimeout(() => flash.style.display = "none", 400); 
             }
 
             if (progress >= 100) {
